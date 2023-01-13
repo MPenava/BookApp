@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BookApp</string>
+    <string name="title_home">Početna</string>
+    <string name="title_books">Knjige</string>
+    <string name="title_shop">Kupovina</string>
+    <string name="title_notifications">Notifikacije</string>
+    <string name="title_settings">Postavke</string>
+</resources>
