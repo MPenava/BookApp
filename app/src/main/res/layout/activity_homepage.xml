@@ -19,8 +19,8 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/book2" />
+            android:layout_height="311dp"
+            app:srcCompat="@drawable/book" />
 
         <TextView
             android:id="@+id/textView"
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:text="Welcome to BookApp"
             android:textColor="#101010"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
     </LinearLayout>
