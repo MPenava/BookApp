@@ -41,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
                                         "Prijavili ste se na sustav, dobrodošli.", Toast.LENGTH_LONG).show();
                                 loginEmailTxt.setText("");
                                 loginPasswordTxt.setText("");
-                                Intent movieIntent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(movieIntent);
+                                Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(mainIntent);
                             } else {
 
                                 Toast.makeText(getApplicationContext(),
