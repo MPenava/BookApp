@@ -32,7 +32,7 @@ public class Settings extends AppCompatActivity {
                         return true;
 
                     case R.id.navigation_books:
-                        startActivity(new Intent(getApplicationContext(), Books.class));
+                        startActivity(new Intent(getApplicationContext(), BooksActivity.class));
                         overridePendingTransition(0,0);
                         return true;
 

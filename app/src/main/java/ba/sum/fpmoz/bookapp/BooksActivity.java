@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Books extends AppCompatActivity {
+public class BooksActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
