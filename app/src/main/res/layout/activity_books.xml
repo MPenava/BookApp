@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".BooksActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/openAddBooksBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="90dp"
+        android:background="@color/purple_200"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_outline_add_24" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,5 +38,7 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/menu"
         android:layout_alignParentBottom="true"/>
+
+
 
 </RelativeLayout>

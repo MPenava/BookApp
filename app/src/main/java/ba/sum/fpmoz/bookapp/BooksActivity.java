@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class BooksActivity extends AppCompatActivity {
 
@@ -20,6 +22,15 @@ public class BooksActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.navigation_books);
+        FloatingActionButton openAddBooksBtn = findViewById(R.id.openAddBooksBtn);
+
+        openAddBooksBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addBookActivity = new Intent(BooksActivity.this, AddBookActivity.class);
+                startActivity(addBookActivity);
+            }
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -52,5 +63,7 @@ public class BooksActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
     }
 }
