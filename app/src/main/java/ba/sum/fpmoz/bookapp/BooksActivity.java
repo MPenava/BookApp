@@ -2,16 +2,27 @@ package ba.sum.fpmoz.bookapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.FirebaseDatabase;
+
+import ba.sum.fpmoz.bookapp.adapter.BookAdapter;
+import ba.sum.fpmoz.bookapp.model.Book;
 
 public class BooksActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    BookAdapter bookAdapter;
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
 
     BottomNavigationView bottomNavigationView;
 
@@ -19,6 +30,16 @@ public class BooksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
+
+        this.recyclerView = findViewById(R.id.bookRv);
+        this.recyclerView.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
+
+        FirebaseRecyclerOptions<Book> options = new FirebaseRecyclerOptions.Builder<Book>().setQuery(this.mDatabase.getReference("Books"), Book.class).build();
+        this.bookAdapter = new BookAdapter(options);
+        this.recyclerView.setAdapter(this.bookAdapter);
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.navigation_books);
@@ -63,7 +84,17 @@ public class BooksActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.bookAdapter.startListening();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.bookAdapter.stopListening();
     }
 }
