@@ -6,4 +6,5 @@
     <string name="title_notifications">Notifikacije</string>
     <string name="title_settings">Postavke</string>
     <string name="nemate_ra_un_registrirajte_se">Nemate račun? <b>Registrirajte se</b></string>
+    <string name="ve_imate_ra_un_prijavite_se">Već imate račun? <b>Prijavite se</b></string>
 </resources>
