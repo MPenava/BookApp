@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -26,6 +27,8 @@ public class BooksActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
+    private static final String TAG = "BOOKS_ACT";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +43,8 @@ public class BooksActivity extends AppCompatActivity {
         this.bookAdapter = new BookAdapter(options);
         this.recyclerView.setAdapter(this.bookAdapter);
 
-
-        bottomNavigationView = findViewById(R.id.bottom_navigator);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_books);
+        //Gumb za dodavanje nove knjige
         FloatingActionButton openAddBooksBtn = findViewById(R.id.openAddBooksBtn);
-
         openAddBooksBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +53,9 @@ public class BooksActivity extends AppCompatActivity {
             }
         });
 
+        //Navigacija
+        bottomNavigationView = findViewById(R.id.bottom_navigator);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_books);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -90,11 +93,14 @@ public class BooksActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         this.bookAdapter.startListening();
+        Log.d(TAG, "starting: početak");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         this.bookAdapter.stopListening();
+        Log.d(TAG, "ending: kraj");
     }
+
 }

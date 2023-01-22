@@ -28,7 +28,7 @@ public class Homepage extends AppCompatActivity {
       openRegisterBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-              Intent registerIntent = new Intent(Homepage.this, MainActivity.class);
+              Intent registerIntent = new Intent(Homepage.this, RegisterActivity.class);
               startActivity(registerIntent);
           }
       });

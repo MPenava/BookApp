@@ -7,7 +7,7 @@
     android:layout_marginBottom="5dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="5dp"
-    app:cardElevation="0dp"
+    app:cardElevation="5dp"
     app:contentPadding="5dp">
 
     <RelativeLayout
@@ -44,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Autor"
+            android:textStyle="italic"
             android:layout_toEndOf="@id/pdfRl"
             android:layout_below="@id/titleTv"
             android:layout_marginTop="8dp"
@@ -58,7 +59,7 @@
             android:layout_toEndOf="@id/pdfRl"
             android:layout_below="@id/authorTv"
             android:layout_marginTop="10dp"
-            android:maxLines="3"
+            android:maxLines="2"
             android:ellipsize="end"
             android:text="Opis knjige">
         </TextView>
