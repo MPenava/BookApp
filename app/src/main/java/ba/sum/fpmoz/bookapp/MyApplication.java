@@ -12,9 +12,10 @@ public class MyApplication extends Application {
         super.onCreate();
     }
 
-    public static final String formatTimestamp(long timestamp){
+    public static final String formatTimestamp(String timestamp){
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(timestamp);
+        long lg = Long.parseLong(timestamp);
+        cal.setTimeInMillis(lg);
 
         String date = DateFormat.format("dd/MM/yyyy", cal).toString();
 
