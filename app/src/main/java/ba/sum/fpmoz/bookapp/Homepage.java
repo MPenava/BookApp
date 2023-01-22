@@ -25,6 +25,7 @@ public class Homepage extends AppCompatActivity {
 
       Button openRegisterBtn = findViewById(R.id.openRegisterBtn);
 
+
       openRegisterBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -44,7 +45,6 @@ public class Homepage extends AppCompatActivity {
       });
 
   }
-
 }
 
 
