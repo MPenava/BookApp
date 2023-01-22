@@ -8,6 +8,12 @@
 
     tools:context=".RegisterActivity">
 
+    <ImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="105dp"
+        android:layout_height="74dp"
+        android:src="@drawable/ic_baseline_arrow_back_24" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="389dp"
         android:layout_height="327dp"

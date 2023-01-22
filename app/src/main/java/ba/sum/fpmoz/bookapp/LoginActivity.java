@@ -20,10 +20,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         EditText loginEmailTxt = findViewById(R.id.loginEmailTxt);
         EditText loginPasswordTxt = findViewById(R.id.loginPasswordTxt);
 
+
         Button loginBtn = findViewById(R.id.loginBtn);
+
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                     });
                 }
             }
-        });
+
+        }
+        );
     }
 }

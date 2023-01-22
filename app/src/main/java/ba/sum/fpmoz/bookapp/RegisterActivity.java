@@ -16,7 +16,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_register);
+
         // Polja za unos podataka
         EditText registerEmailTxt = findViewById(R.id.registerEmailTxt);
         EditText registerPasswordTxt = findViewById(R.id.registerPasswordTxt);
