@@ -2,6 +2,7 @@ package ba.sum.fpmoz.bookapp.adapter;
 
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import ba.sum.fpmoz.bookapp.MyApplication;
 import ba.sum.fpmoz.bookapp.R;
@@ -35,6 +38,7 @@ import ba.sum.fpmoz.bookapp.model.Book;
 public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookViewHolder>{
 
     Context context;
+    public static final String TAG = "BOOK_ADAPTER";
 
     public BookAdapter(@NonNull FirebaseRecyclerOptions <Book> options) {
         super(options);
@@ -50,21 +54,70 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
 
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position, @NonNull Book model) {
-        holder.titleTv.setText(model.getTitle());
-        holder.authorTv.setText(model.getAuthor());
-        holder.descriptionTv.setText(model.getDescription());
+        String title = model.getTitle();
+        String author = model.getAuthor();
+        String description = model.getDescription();
+        String date = model.getTimestamp();
+        String timestamp = model.getTimestamp();
 
+        String formattedDate = MyApplication.formatTimestamp(timestamp);
+
+        holder.titleTv.setText(title);
+        holder.authorTv.setText(author);
+        holder.descriptionTv.setText(description);
+        holder.dateTv.setText(formattedDate);
+
+        Log.d(TAG, "title: " + title);
+        Log.d(TAG, "timestamp: " + formattedDate);
+
+        loadPdfSize(model, holder);
+    }
+
+    private void loadPdfSize(Book model, BookViewHolder holder) {
+
+        String pdfUrl = model.getUrl();
+
+        StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
+        ref.getMetadata()
+                .addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                    @Override
+                    public void onSuccess(StorageMetadata storageMetadata) {
+                        double bytes = storageMetadata.getSizeBytes();
+                        Log.d(TAG, "onSuccess: " + model.getTitle() + " " + bytes);
+
+                        double kb = bytes/1024;
+                        double mb = kb/1024;
+
+                        if(mb >=1){
+                            holder.sizeTv.setText(String.format("%.2f", mb)+" MB");
+                        }
+                        else if(kb >=1){
+                            holder.sizeTv.setText(String.format("%.2f", kb)+" KB");
+                        }
+                        else{
+                            holder.sizeTv.setText(String.format("%.2f", bytes)+" bytes");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: " + e.getMessage());
+                    }
+                });
     }
 
     class BookViewHolder extends RecyclerView.ViewHolder{
 
-        TextView titleTv, authorTv, descriptionTv;
+        TextView titleTv, authorTv, descriptionTv, dateTv, sizeTv;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTv = itemView.findViewById(R.id.titleTv);
             authorTv = itemView.findViewById(R.id.authorTv);
             descriptionTv = itemView.findViewById(R.id.descriptionTv);
+            dateTv = itemView.findViewById(R.id.dateTv);
+            sizeTv = itemView.findViewById(R.id.sizeTv);
         }
 
     }
