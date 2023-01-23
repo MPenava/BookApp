@@ -28,11 +28,18 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:layout_width="178dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:text="Moj profil"
                 android:textColor="#0C0C0C" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
 
         </LinearLayout>
 
@@ -52,9 +59,16 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:text="Ocijeni aplikaciju"
                 android:textColor="#070707" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
 
 
         </LinearLayout>
@@ -72,6 +86,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
+                android:clickable="true"
                 app:srcCompat="@android:drawable/ic_menu_info_details" />
 
             <TextView
@@ -81,6 +96,13 @@
                 android:layout_weight="2"
                 android:text="O aplikaciji"
                 android:textColor="#090909" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
 
 
         </LinearLayout>
@@ -104,6 +126,13 @@
                 android:layout_weight="2"
                 android:text="Odjava"
                 android:textColor="#0C0C0C" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
 
         </LinearLayout>
 
