@@ -11,16 +11,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Settings extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     ImageView imgLogoutView;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        mAuth = FirebaseAuth.getInstance();
 
         imgLogoutView = findViewById(R.id.imgLogout);
         bottomNavigationView = findViewById(R.id.bottom_navigator);
@@ -61,9 +65,16 @@ public class Settings extends AppCompatActivity {
         imgLogoutView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Homepage.class);
-                startActivity(intent);
+                mAuth.signOut();
+                imgLogout();
+
             }
         });
+
+    }
+
+    private void imgLogout() {
+        Intent intent = new Intent(getApplicationContext(), Homepage.class);
+        startActivity(intent);
     }
 }
