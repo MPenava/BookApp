@@ -5,19 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Homepage extends AppCompatActivity {
 
-    //private ActivityHomepageBinding binding;
 
-  //  @Override
-    //protected void onCreate(Bundle savedInstanceState){
-      //  super.onCreate(savedInstanceState);
-        //binding=ActivityHomepageBinding.inflate(getLayoutInflater());
-        //setContentView(binding.getRoot());
-  //  }
   @Override
   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -43,6 +37,7 @@ public class Homepage extends AppCompatActivity {
               startActivity(loginIntent);
           }
       });
+
 
   }
 }

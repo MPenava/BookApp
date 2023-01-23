@@ -6,18 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Settings extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    ImageView imgLogoutView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        imgLogoutView = findViewById(R.id.imgLogout);
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.navigation_settings);
 
@@ -50,6 +55,14 @@ public class Settings extends AppCompatActivity {
                         return true;
                 }
                 return false;
+            }
+        });
+
+        imgLogoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Homepage.class);
+                startActivity(intent);
             }
         });
     }
