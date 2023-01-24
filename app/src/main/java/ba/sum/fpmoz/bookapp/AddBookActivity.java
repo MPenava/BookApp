@@ -72,7 +72,10 @@ public class AddBookActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                //Ne radi ispravno
+                //onBackPressed();
+                Intent i = new Intent(AddBookActivity.this, BooksActivity.class);
+                startActivity(i);
             }
         });
         

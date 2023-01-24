@@ -22,8 +22,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:orientation="vertical"
             android:padding="25sp">
 
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20sp"
                 android:fontFamily="sans-serif-black"
-                android:text="BookApp"
+                android:text="Prijava"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="34sp" />
@@ -86,7 +86,7 @@
                 android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Prijava na sustav"
+                android:text="Prijavite se"
                 app:cornerRadius="10sp" />
             <!--Forgot password-->
             <TextView

@@ -35,17 +35,17 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.navigation_shop:
-                        startActivity(new Intent(getApplicationContext(), Shop.class));
+                        startActivity(new Intent(getApplicationContext(), ShopActivity.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.navigation_notifications:
-                        startActivity(new Intent(getApplicationContext(), Notifications.class));
+                        startActivity(new Intent(getApplicationContext(), NotificationsActivity.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.navigation_settings:
-                        startActivity(new Intent(getApplicationContext(), Settings.class));
+                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

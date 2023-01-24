@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Homepage extends AppCompatActivity {
+public class HomepageActivity extends AppCompatActivity {
 
     //private ActivityHomepageBinding binding;
 
@@ -29,7 +29,7 @@ public class Homepage extends AppCompatActivity {
       openRegisterBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-              Intent registerIntent = new Intent(Homepage.this, RegisterActivity.class);
+              Intent registerIntent = new Intent(HomepageActivity.this, RegisterActivity.class);
               startActivity(registerIntent);
           }
       });
@@ -39,7 +39,7 @@ public class Homepage extends AppCompatActivity {
       OpenLoginBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-              Intent loginIntent = new Intent(Homepage.this, LoginActivity.class);
+              Intent loginIntent = new Intent(HomepageActivity.this, LoginActivity.class);
               startActivity(loginIntent);
           }
       });

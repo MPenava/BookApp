@@ -9,17 +9,17 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Settings extends AppCompatActivity {
+public class NotificationsActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_notifications);
 
         bottomNavigationView = findViewById(R.id.bottom_navigator);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_settings);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_notifications);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -37,16 +37,16 @@ public class Settings extends AppCompatActivity {
                         return true;
 
                     case R.id.navigation_shop:
-                        startActivity(new Intent(getApplicationContext(), Shop.class));
+                        startActivity(new Intent(getApplicationContext(), ShopActivity.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.navigation_notifications:
-                        startActivity(new Intent(getApplicationContext(), Notifications.class));
-                        overridePendingTransition(0,0);
                         return true;
 
                     case R.id.navigation_settings:
+                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                 }
                 return false;

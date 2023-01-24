@@ -42,7 +42,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Homepage"
+            android:name=".HomepageActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -56,21 +56,21 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Notifications"
+            android:name=".NotificationsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Settings"
+            android:name=".SettingsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Shop"
+            android:name=".ShopActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
