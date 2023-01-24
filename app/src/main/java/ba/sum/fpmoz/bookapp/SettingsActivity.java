@@ -74,7 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void imgLogout() {
-        Intent intent = new Intent(getApplicationContext(), Homepage.class);
+        Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
         startActivity(intent);
     }
 }
