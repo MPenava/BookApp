@@ -128,7 +128,7 @@
                 android:textColor="#0C0C0C" />
 
             <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/imgLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
