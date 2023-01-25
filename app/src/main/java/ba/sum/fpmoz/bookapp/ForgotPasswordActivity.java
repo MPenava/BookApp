@@ -17,13 +17,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.BreakIterator;
+
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ProgressDialog progressDialog;
 
-    EditText emailEt = findViewById(R.id.emailEt);
+
     private FirebaseAuth firebaseAuth;
+    private BreakIterator emailEt;
 
 
     @Override
@@ -31,19 +34,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
+        EditText emailEt = findViewById(R.id.emailEt);
 
         progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Pričekajte...");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        ImageButton backBtn1 = findViewById(R.id.backBtn1);
-
-        backBtn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         Button submitBtn = findViewById(R.id.submitBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -52,9 +48,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 validateData();
             }
         });
-
-
-
 
     }
 

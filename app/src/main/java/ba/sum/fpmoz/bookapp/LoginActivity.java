@@ -21,11 +21,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         EditText loginEmailTxt = findViewById(R.id.loginEmailTxt);
         EditText loginPasswordTxt = findViewById(R.id.loginPasswordTxt);
         TextView forgotPsw = findViewById(R.id.forgotPsw);
 
         forgotPsw.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
@@ -33,8 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button loginBtn = findViewById(R.id.loginBtn);
-
-
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
