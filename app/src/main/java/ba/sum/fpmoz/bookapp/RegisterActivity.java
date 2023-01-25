@@ -1,10 +1,13 @@
 package ba.sum.fpmoz.bookapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +26,15 @@ public class RegisterActivity extends AppCompatActivity {
         EditText registerEmailTxt = findViewById(R.id.registerEmailTxt);
         EditText registerPasswordTxt = findViewById(R.id.registerPasswordTxt);
         EditText registerPasswordCnfTxt = findViewById(R.id.registerPasswordCnfTxt);
+        TextView noAccount = findViewById(R.id.noAccount);
+
+        noAccount.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+            }
+        });
         // Gumb za registraciju
         Button registerBtn = findViewById(R.id.registerBtn);
         // Što se događa nakon klika
