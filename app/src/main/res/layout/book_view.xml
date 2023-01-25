@@ -22,8 +22,8 @@
             android:layout_marginEnd="5dp"
             android:background="@color/gray01">
 
-            <ProgressBar
-                android:id="@+id/progressBar"
+            <ImageView
+                android:id="@+id/imageIv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </RelativeLayout>

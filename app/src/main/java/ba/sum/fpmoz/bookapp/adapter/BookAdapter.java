@@ -24,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,6 +60,7 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
         String description = model.getDescription();
         String date = model.getTimestamp();
         String timestamp = model.getTimestamp();
+        String image = model.getImage();
 
         String formattedDate = MyApplication.formatTimestamp(timestamp);
 
@@ -66,6 +68,10 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
         holder.authorTv.setText(author);
         holder.descriptionTv.setText(description);
         holder.dateTv.setText(formattedDate);
+        Picasso
+                .get()
+                .load(image)
+                .into(holder.imageIv);
 
         Log.d(TAG, "title: " + title);
         Log.d(TAG, "timestamp: " + formattedDate);
@@ -109,13 +115,15 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
 
     class BookViewHolder extends RecyclerView.ViewHolder{
 
-        TextView titleTv, authorTv, descriptionTv, dateTv, sizeTv;
+        TextView titleTv, authorTv, descriptionTv,  dateTv, sizeTv;
+        ImageView imageIv;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTv = itemView.findViewById(R.id.titleTv);
             authorTv = itemView.findViewById(R.id.authorTv);
             descriptionTv = itemView.findViewById(R.id.descriptionTv);
+            imageIv = itemView.findViewById(R.id.imageIv);
             dateTv = itemView.findViewById(R.id.dateTv);
             sizeTv = itemView.findViewById(R.id.sizeTv);
         }

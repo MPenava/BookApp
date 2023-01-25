@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText loginEmailTxt = findViewById(R.id.loginEmailTxt);
         EditText loginPasswordTxt = findViewById(R.id.loginPasswordTxt);
         TextView forgotPsw = findViewById(R.id.forgotPsw);
-        TextView registrationTxt = findViewById(R.id.registration);
+        TextView registrationTxt = findViewById(R.id.noAccount);
 
         forgotPsw.setOnClickListener(new View.OnClickListener() {
 

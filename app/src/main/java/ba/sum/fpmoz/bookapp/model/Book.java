@@ -5,6 +5,7 @@ public class Book {
     private String description;
     private String author;
     private String url;
+    private String image;
 
     private String timestamp;
 
@@ -46,5 +47,13 @@ public class Book {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

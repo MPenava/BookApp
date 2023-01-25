@@ -30,13 +30,14 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 
 import ba.sum.fpmoz.bookapp.databinding.ActivityAddBookBinding;
+import kotlin.jvm.Synchronized;
 
 
 public class AddBookActivity extends AppCompatActivity {
 
     private ActivityAddBookBinding binding;
 
-    ImageButton backBtn, attachPdf;
+    ImageButton backBtn, attachPdf, attachImg;
     Button submitBtn;
 
     private String title = "", description = "", author = "";
@@ -47,7 +48,10 @@ public class AddBookActivity extends AppCompatActivity {
 
     private Uri pdfUri = null;
 
+    private Uri imgUri = null;
+
     private static final int PDF_PICK_CODE = 1000;
+    private static final int IMG_PICK_CODE = 1001;
 
     private static final String TAG ="ADD_PDF_TAG";
 
@@ -67,8 +71,8 @@ public class AddBookActivity extends AppCompatActivity {
         progressDialog.setTitle("Molimo pričekajte");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        backBtn = (ImageButton) findViewById(R.id.backBtn);
         //Povrat na prošlu stranicu
+        backBtn = (ImageButton) findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +92,15 @@ public class AddBookActivity extends AppCompatActivity {
             }
         });
 
+        //Dohvat slike
+        attachImg = (ImageButton) findViewById(R.id.attachImg);
+        attachImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgPickIntent();
+            }
+        });
+
         submitBtn =  findViewById(R.id.submitBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +110,7 @@ public class AddBookActivity extends AppCompatActivity {
         });
     }
 
+    //Radi
     private void validateData(){
         Log.d(TAG, "validateData: validating data...");
 
@@ -113,12 +127,14 @@ public class AddBookActivity extends AppCompatActivity {
             Toast.makeText(this, "Unesite autora...", Toast.LENGTH_SHORT).show();
         }else if(pdfUri == null){
             Toast.makeText(this, "Odaberite pdf...", Toast.LENGTH_SHORT).show();
+        }else if(imgUri == null) {
+            Toast.makeText(this, "Odaberite sliku...", Toast.LENGTH_SHORT).show();
         }else{
-           uploadPdfToStorage(); 
+           uploadFilesToStorage();
         }
     }
 
-    private void uploadPdfToStorage() {
+    private void uploadFilesToStorage() {
         Log.d(TAG, "uploadPdfToStorage: dodavanje u pohranu");
 
         progressDialog.setMessage("Dodavanje PDFa..");
@@ -126,20 +142,26 @@ public class AddBookActivity extends AppCompatActivity {
 
         long timestamp = System.currentTimeMillis();
 
-        String filePathAndName = "Books/" + timestamp;
+        String filePathAndName1 = "Books/files/" + timestamp;
+        String filePathAndName2 = "Books/images/" + timestamp;
 
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
-        storageReference.putFile(pdfUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final String[] uploadedPdfUrl = new String[1];
+        final String[] uploadedImgUrl = new String[1];
+
+        StorageReference storageReference1 = FirebaseStorage.getInstance().getReference(filePathAndName1);
+        StorageReference storageReference2 = FirebaseStorage.getInstance().getReference(filePathAndName2);
+        storageReference1.putFile(pdfUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d(TAG, "onSuccess: uspješno dodano");
+                Log.d(TAG, "onSuccess: uspješno dodan pdf");
                 Log.d(TAG, "onSuccess: dohvat pdf urla");
 
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while(!uriTask.isSuccessful());
-                String uploadedPdfUrl = ""+uriTask.getResult();
-                
-                uploadPdfInfoToDb(uploadedPdfUrl, timestamp);
+                uploadedPdfUrl[0] = ""+uriTask.getResult();
+                if(uploadedPdfUrl[0] != null && uploadedImgUrl[0] != null){
+                    uploadDataToDb(uploadedPdfUrl[0], uploadedImgUrl[0], timestamp);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -150,13 +172,35 @@ public class AddBookActivity extends AppCompatActivity {
             }
         });
 
+        storageReference2.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "onSuccess: uspješno dodana slika");
+                Log.d(TAG, "onSuccess: dohvat urla slike");
+
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while(!uriTask.isSuccessful());
+                uploadedImgUrl[0] = ""+uriTask.getResult();
+                if(uploadedPdfUrl[0] != null && uploadedImgUrl[0] != null){
+                    uploadDataToDb(uploadedPdfUrl[0], uploadedImgUrl[0], timestamp);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Log.d(TAG, "onFailture: greška pri dodavanju slike " + e.getMessage());
+                Toast.makeText(AddBookActivity.this, "Dodavanje slike greška " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
-    private void uploadPdfInfoToDb(String uploadedPdfUrl, long timestamp) {
+    //Radi
+    private void uploadDataToDb(String uploadedPdfUrl, String uploadedImgUrl, long timestamp) {
         Log.d(TAG, "uploadPdfToStorage: dodavanje u bazu");
 
-        progressDialog.setMessage("Dodavanje informacija o pdfu");
+        progressDialog.setMessage("Dodavanje informacija o pdfu i slici");
 
         String uid = firebaseAuth.getUid();
 
@@ -168,6 +212,7 @@ public class AddBookActivity extends AppCompatActivity {
         hashMap.put("description", ""+description);
         hashMap.put("author", ""+author);
         hashMap.put("url", ""+uploadedPdfUrl);
+        hashMap.put("image", ""+uploadedImgUrl);
         hashMap.put("timestamp", ""+timestamp);
 
         DatabaseReference ref = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Books");
@@ -191,12 +236,22 @@ public class AddBookActivity extends AppCompatActivity {
                 });
     }
 
+    //Radi
     private void pdfPickIntent() {
         Log.d(TAG, "pdfPickIntent: početak odabira pdf dokumta");
         Intent i = new Intent();
         i.setType("application/pdf");
         i.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(i, "Odaberite PDF"), PDF_PICK_CODE);
+    }
+
+    //Radi
+    private void imgPickIntent() {
+        Log.d(TAG, "imgPickIntent: početak odabira slike");
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i, "Odaberite sliku"), IMG_PICK_CODE);
     }
 
     @Override
@@ -209,11 +264,18 @@ public class AddBookActivity extends AppCompatActivity {
 
                 pdfUri = data.getData();
 
-                Log.d(TAG, "onActivityResult: URI: " +pdfUri);
+                Log.d(TAG, "onActivityResult: URIPDF: " +pdfUri);
+            }
+            if(requestCode == IMG_PICK_CODE){
+                Log.d(TAG, "onActivityResult: slika odabran");
+
+                imgUri = data.getData();
+
+                Log.d(TAG, "onActivityResult: URIIMG: " +imgUri);
             }
         } else{
             Log.d(TAG, "onActivityResult: zatvaranje odabira");
-            Toast.makeText(this, "zatvaranje odabira pdf", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "zatvaranje odabira ", Toast.LENGTH_SHORT).show();
         }
     }
 }
