@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,9 +23,17 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText loginEmailTxt = findViewById(R.id.loginEmailTxt);
         EditText loginPasswordTxt = findViewById(R.id.loginPasswordTxt);
+        TextView forgotPsw = findViewById(R.id.forgotPsw);
 
+        forgotPsw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
+            }
+        });
 
         Button loginBtn = findViewById(R.id.loginBtn);
+
 
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         }
+
+
         );
     }
 }
