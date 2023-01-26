@@ -6,27 +6,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.BreakIterator;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
+    private EditText emailTxt;
+    private Button buttonPswReset;
+    private ProgressBar progressBar;
+
+    private FirebaseAuth authProfile;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private ProgressDialog progressDialog;
 
-
-    private FirebaseAuth firebaseAuth;
-    private BreakIterator emailEt;
+    public static final String TAG = "RESET_PSW";
 
 
     @Override
@@ -34,57 +40,42 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        EditText emailEt = findViewById(R.id.emailEt);
+        EditText emailTxt = findViewById(R.id.emailTxt);
+        Button buttonPswReset = findViewById(R.id.buttonPswReset);
 
-        progressDialog=new ProgressDialog(this);
-        progressDialog.setTitle("Pričekajte...");
-        progressDialog.setCanceledOnTouchOutside(false);
-
-
-        Button submitBtn = findViewById(R.id.submitBtn);
-        submitBtn.setOnClickListener(new View.OnClickListener() {
+        buttonPswReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateData();
+                String email = emailTxt.getText().toString();
+
+                Patterns Patters;
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(getApplicationContext(),"Morate unijeti email adresu",Toast.LENGTH_LONG).show();
+                    emailTxt.setError("Morate unijeti email adresu");
+                    emailTxt.requestFocus();
+                }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    Toast.makeText(getApplicationContext(),"Netočan email",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    resetPassword(email);
+                }
             }
         });
 
     }
 
-    private String email="";
-    private void validateData() {
-        email = emailEt.getText().toString().trim();
-        Patterns Patters = null;
-        if(email.isEmpty()){
-            Toast.makeText(this, "Potvrdi email..", Toast.LENGTH_SHORT).show();
-        }
-        else if(!Patters.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(this,"Netočan email",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            recoverPassword();
-        }
-    }
+    private void resetPassword(String email) {
+        authProfile = FirebaseAuth.getInstance();
+        authProfile.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Molimo provjerite poruku o promjeni lozinke",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Nešto nije u redu!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-    private void recoverPassword() {
-        progressDialog.setMessage("Slanje šifre na email"+email);
-        progressDialog.show();
-
-        firebaseAuth.sendPasswordResetEmail(email)
-                .addOnSuccessListener(new OnSuccessListener<Void>(){
-                    @Override
-                    public void onSuccess(Void unused){
-                        progressDialog.dismiss();
-                        Toast.makeText(ForgotPasswordActivity.this, "Resetiraj šifru"+email, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener(){
-                    @Override
-                    public void onFailure(@NonNull Exception e){
-
-                        progressDialog.dismiss();
-                        Toast.makeText(ForgotPasswordActivity.this,"Pogrešno slanje"+e.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
     };
 }

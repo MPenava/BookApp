@@ -82,7 +82,7 @@ public class AddBookActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        
+
         //Dohvat pdf dokumenta
         attachPdf = (ImageButton) findViewById(R.id.attachPdf);
         attachPdf.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +130,7 @@ public class AddBookActivity extends AppCompatActivity {
         }else if(imgUri == null) {
             Toast.makeText(this, "Odaberite sliku...", Toast.LENGTH_SHORT).show();
         }else{
-           uploadFilesToStorage();
+            uploadFilesToStorage();
         }
     }
 
