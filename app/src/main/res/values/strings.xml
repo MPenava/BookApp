@@ -7,4 +7,6 @@
     <string name="title_settings">Postavke</string>
     <string name="nemate_ra_un_registrirajte_se">Nemate račun? <b>Registrirajte se</b></string>
     <string name="ve_imate_ra_un_prijavite_se">Već imate račun? <b>Prijavite se</b></string>
+    <string name="citat">“Knjiga je jedino mjesto gdje možeš sagledati krhku misao bez da je slomiš ili istražiti eksplozivnu ideju bez straha da će ti odjeknuti u lice. To je jedno od rijetkih preostalih utočišta u kojima ljudski um može dobiti i provokaciju i privatnost.”</string>
+    <string name="autor">-Edward P. Morgan</string>
 </resources>

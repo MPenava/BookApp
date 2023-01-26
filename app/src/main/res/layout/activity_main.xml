@@ -4,17 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_01"
+    android:background="@drawable/background02"
     tools:context=".MainActivity">
 
+
     <TextView
+        android:id="@+id/citat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_home"
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"
-        android:textColor="@color/black"/>
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:layout_marginBottom="150dp"
+        android:text="@string/citat"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:textSize="23dp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/autor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="40dp"
+        android:text="@string/autor"
+        android:textAlignment="textEnd"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:textColor="@color/gray02"
+        android:textSize="20dp"
+        android:textStyle="italic" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
