@@ -3,20 +3,32 @@ package ba.sum.fpmoz.bookapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import ba.sum.fpmoz.bookapp.model.User;
 
 public class SettingsActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     ImageView imgLogoutView;
+    TextView viewLl, fullnameTv, phoneTv, emailTv;
+    Button logoutBtn;
     FirebaseAuth mAuth;
 
     @Override
@@ -25,10 +37,45 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
 
-        imgLogoutView = findViewById(R.id.imgLogout);
+        logoutBtn = findViewById(R.id.logoutBtn);
+
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.navigation_settings);
+
+        viewLl = findViewById(R.id.viewLl);
+        fullnameTv = findViewById(R.id.fullnameTv);
+        phoneTv = findViewById(R.id.phoneTv);
+        emailTv = findViewById(R.id.emailTv);
+
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            DatabaseReference profileRef = mDatabase.getReference("Profile").child(currentUser.getUid());
+            profileRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    User profileUser = task.getResult().getValue(User.class);
+                    if(profileUser != null){
+                        viewLl.setText(profileUser.getFullname());
+                        fullnameTv.setText(profileUser.getFullname());
+                        phoneTv.setText(profileUser.getPhone());
+                        emailTv.setText(profileUser.getEmail());
+                    }
+                }
+            });
+        }
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -61,20 +108,5 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        imgLogoutView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                imgLogout();
-
-            }
-        });
-
-    }
-
-    private void imgLogout() {
-        Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
-        startActivity(intent);
     }
 }

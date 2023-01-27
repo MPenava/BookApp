@@ -14,6 +14,7 @@ import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ba.sum.fpmoz.bookapp.adapter.BookAdapter;
@@ -24,6 +25,7 @@ public class BooksActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     BookAdapter bookAdapter;
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     BottomNavigationView bottomNavigationView;
 
@@ -34,6 +36,14 @@ public class BooksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
 
+        FloatingActionButton openAddBooksBtn = findViewById(R.id.openAddBooksBtn);
+        /*
+        if(mAuth.getCurrentUser().getEmail().equals("marko.penava@fpmoz.sum.ba")){
+            openAddBooksBtn.setVisibility(View.VISIBLE);
+        }
+        *
+         */
+
         this.recyclerView = findViewById(R.id.bookRv);
         this.recyclerView.setLayoutManager(
                 new LinearLayoutManager(this)
@@ -43,8 +53,7 @@ public class BooksActivity extends AppCompatActivity {
         this.bookAdapter = new BookAdapter(options);
         this.recyclerView.setAdapter(this.bookAdapter);
 
-        //Gumb za dodavanje nove knjige
-        FloatingActionButton openAddBooksBtn = findViewById(R.id.openAddBooksBtn);
+
         openAddBooksBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
