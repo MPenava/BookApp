@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Welcome to BookApp"
+            android:text="Dobrodošli u BookApp"
             android:textColor="#101010"
             android:textSize="24sp"
             android:textStyle="bold" />

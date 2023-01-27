@@ -56,14 +56,19 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Prijavili ste se na sustav, dobrodošli.", Toast.LENGTH_LONG).show();
                                 loginEmailTxt.setText("");
                                 loginPasswordTxt.setText("");
-                                Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(mainIntent);
+                                if (mAuth.getCurrentUser().isEmailVerified()) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "Uspješno ste se prijavili na sustav.", Toast.LENGTH_LONG).show();
+                                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(mainIntent);
+                                }else{
+                                    mAuth.signOut();
+                                    Toast.makeText(getApplicationContext(),
+                                            "Molimo potvrdite email adresu.", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-
                                 Toast.makeText(getApplicationContext(),
                                         "Pogrešni korisnički podaci.", Toast.LENGTH_LONG).show();
                             }
@@ -71,10 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
                 }
             }
-
         }
-
-
         );
     }
 }
