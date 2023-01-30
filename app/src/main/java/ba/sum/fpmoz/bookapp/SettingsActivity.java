@@ -28,7 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ImageView imgLogoutView;
     TextView viewLl, fullnameTv, phoneTv, emailTv;
-    Button logoutBtn;
+    Button editProfile, changePassword, logoutBtn;
     FirebaseAuth mAuth;
 
     @Override
@@ -39,6 +39,8 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
 
+        editProfile = findViewById(R.id.editProfile);
+        changePassword = findViewById(R.id.changePassword);
         logoutBtn = findViewById(R.id.logoutBtn);
 
         bottomNavigationView = findViewById(R.id.bottom_navigator);
@@ -66,6 +68,22 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
         }
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent editProfileActivity = new Intent(SettingsActivity.this, EditProfileActivity.class);
+                startActivity(editProfileActivity);
+            }
+        });
+
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent changePasswordActivity = new Intent(SettingsActivity.this, ChangePasswordActivity.class);
+                startActivity(changePasswordActivity);
+            }
+        });
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,5 +126,19 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+
+    //Provjeravanje korisnikove prijave
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user =mAuth.getCurrentUser();
+        if(user != null){
+
+        }else{
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 }

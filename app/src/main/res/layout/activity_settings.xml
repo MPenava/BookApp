@@ -176,6 +176,7 @@
         android:layout_marginTop="50dp">
 
         <Button
+            android:id="@+id/editProfile"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:backgroundTint="@color/white"
@@ -185,6 +186,7 @@
             android:drawableLeft="@drawable/ic_baseline_edit_24"/>
 
         <Button
+            android:id="@+id/changePassword"
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:backgroundTint="@color/white"
