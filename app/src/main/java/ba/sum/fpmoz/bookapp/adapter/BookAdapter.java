@@ -47,7 +47,7 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
 
     Context context;
     public static final String TAG = "BOOK_ADAPTER";
-
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
 
     private ProgressDialog progressDialog;
 
@@ -85,8 +85,7 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
                 .load(image)
                 .into(holder.imageIv);
 
-        Log.d(TAG, "title: " + title);
-        Log.d(TAG, "timestamp: " + formattedDate);
+
 
         loadPdfSize(model, holder);
 
@@ -103,7 +102,7 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
         String bookURL = model.getUrl();
         String bookTitle = model.getTitle();
 
-       // Opcije koje će se prikazivati u dijalogu
+        // Opcije koje će se prikazivati u dijalogu
         String[] options = {"Uredi", "Izbriši"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -119,34 +118,34 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
                     deleteBook(model, holder);
                 }
 
-             }
+            }
         }).show();
     }
 
     private void deleteBook(Book model, BookViewHolder holder) {
-        String bookAuthor = model.getAuthor();
+        Log.d(TAG, "onDelete:uspješno učitavanje");
         String bookURL = model.getUrl();
+        String bookTimetamp = model.getTimestamp();
+        String bookImage = model.getImage();
         String bookTitle = model.getTitle();
 
         Log.d(TAG, "deleteBook: Deleting...");
-        progressDialog.setMessage("Deleting"+bookTitle+"...");
-        progressDialog.show();
 
-        Log.d(TAG, "deleteBook: Deleting from storage...");
-        StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(bookURL);
-        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        StorageReference storageReferencePdf = FirebaseStorage.getInstance().getReferenceFromUrl(bookURL);
+        StorageReference storageReferenceImage = FirebaseStorage.getInstance().getReferenceFromUrl(bookImage);
+        storageReferencePdf.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d(TAG, "onSuccess: Deleted from storage");
                 Log.d(TAG, "onSuccess: Now deleting from db");
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Books");
-                reference.child(bookAuthor).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                DatabaseReference reference = mDatabase.getReference("Books");
+                Log.d(TAG, "reference:" + reference.child("gg").getParent());
+                reference.child(bookTimetamp).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(TAG, "onSuccess: Deleted from db too");
-                        progressDialog.dismiss();
-                        Toast.makeText(context, "Book Deleted Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Knjiga uspješno izbrisana", Toast.LENGTH_SHORT).show();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -163,7 +162,21 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: Failed to delete from storage due to"+e.getMessage());
+                Log.d(TAG, "onFailure: Failed to delete pdf file from storage due to"+e.getMessage());
+                progressDialog.dismiss();
+                Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        storageReferenceImage.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "onSuccess: Deleted from storage");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Failed to delete image from storage due to"+e.getMessage());
                 progressDialog.dismiss();
                 Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
