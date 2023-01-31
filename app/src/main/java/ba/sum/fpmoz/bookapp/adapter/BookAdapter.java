@@ -102,7 +102,7 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
         String bookURL = model.getUrl();
         String bookTitle = model.getTitle();
 
-        // Opcije koje će se prikazivati u dijalogu
+        // Opcije koje će se prikazivati u dijalogu.
         String[] options = {"Uredi", "Izbriši"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
