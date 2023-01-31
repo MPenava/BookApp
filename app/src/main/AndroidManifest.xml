@@ -70,6 +70,20 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ShopActivity"
             android:exported="false" >
             <meta-data
@@ -78,6 +92,13 @@
         </activity>
         <activity
             android:name=".BooksActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".PdfEditActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"

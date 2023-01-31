@@ -79,54 +79,10 @@
         android:layout_marginRight="15dp"/>
 
     <LinearLayout
-        android:id="@+id/viewPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/viewFullname"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_profile_phone"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Telefon"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
-
-        <TextView
-            android:id="@+id/phoneTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="+38763-123-456"
-            android:textColor="@color/gray02"
-            android:layout_marginLeft="25dp"
-            android:textSize="18dp" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@+id/viewPhone"
-        android:background="@color/black"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"/>
-
-    <LinearLayout
         android:id="@+id/viewEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewPhone"
+        android:layout_below="@+id/viewFullname"
         android:layout_marginTop="20dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -166,6 +122,52 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/viewPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewEmail"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_profile_phone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telefon"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:id="@+id/phoneTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:text="+38763-123-456"
+            android:textColor="@color/gray02"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/viewPhone"
+        android:background="@color/black"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
