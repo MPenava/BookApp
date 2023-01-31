@@ -10,12 +10,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ba.sum.fpmoz.bookapp.adapter.BookAdapter;
 import ba.sum.fpmoz.bookapp.model.Book;
@@ -57,8 +62,13 @@ public class BooksActivity extends AppCompatActivity {
         openAddBooksBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addBookActivity = new Intent(BooksActivity.this, AddBookActivity.class);
-                startActivity(addBookActivity);
+                FirebaseUser currentUser  = mAuth.getCurrentUser();
+                if(isEmailValid(currentUser.getEmail())){
+                    Intent addBookActivity = new Intent(BooksActivity.this, AddBookActivity.class);
+                    startActivity(addBookActivity);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Nemate mogućnost dodavavanja knjiga", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -110,6 +120,17 @@ public class BooksActivity extends AppCompatActivity {
         super.onStop();
         this.bookAdapter.stopListening();
         Log.d(TAG, "ending: kraj");
+    }
+
+    //Validacija emaila
+    public boolean isEmailValid(String email) {
+        String regExpn = "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                + "(fpmoz.sum.ba)$";
+
+        Pattern pattern = Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 
 }

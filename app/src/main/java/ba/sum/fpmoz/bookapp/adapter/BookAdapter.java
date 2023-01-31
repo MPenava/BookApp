@@ -24,6 +24,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,7 +37,11 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import ba.sum.fpmoz.bookapp.AddBookActivity;
+import ba.sum.fpmoz.bookapp.BooksActivity;
 import ba.sum.fpmoz.bookapp.MyApplication;
 import ba.sum.fpmoz.bookapp.PdfEditActivity;
 import ba.sum.fpmoz.bookapp.R;
@@ -48,9 +54,9 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
     Context context;
     public static final String TAG = "BOOK_ADAPTER";
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private ProgressDialog progressDialog;
-
 
     public BookAdapter(@NonNull FirebaseRecyclerOptions <Book> options) {
         super(options);
@@ -65,19 +71,16 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BookViewHolder holder, int position, @NonNull Book model)   {
+    public void onBindViewHolder(@NonNull BookViewHolder holder, int position, @NonNull Book model) {
         String title = model.getTitle();
         String author = model.getAuthor();
         String description = model.getDescription();
-        String pdfUrl= model.getUrl();
         String date = model.getTimestamp();
         String timestamp = model.getTimestamp();
         String image = model.getImage();
 
 
         String formattedDate = MyApplication.formatTimestamp(timestamp);
-
-
 
         holder.titleTv.setText(title);
         holder.authorTv.setText(author);
@@ -90,36 +93,24 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
 
 
 
-
-        MyApplication.loadPdfSize(
-                ""+pdfUrl,
-                ""+title,
-                holder.sizeTv);
+        loadPdfSize(model, holder);
 
         holder.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moreOptionsDialog(model, holder);
-            }
-        });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context,PdfEditActivity.class);
-                intent.putExtra("bookUrl",pdfUrl);
-                context.startActivity(intent);
+                FirebaseUser currentUser  = mAuth.getCurrentUser();
+                if(isEmailValid(currentUser.getEmail())){
+                    moreOptionsDialog(model, holder);
+                }
             }
         });
     }
 
     private void moreOptionsDialog(Book model, BookViewHolder holder) {
-        String bookAuthor = model.getAuthor();
-        String bookURL = model.getUrl();
-        String bookTitle = model.getTitle();
-        String bookImage= model.getImage();
+        String bookId = model.getTimestamp();
 
         // Opcije koje će se prikazivati u dijalogu.
-        String[] options = {"Uredi", "Izbriši", "Detalji"};
+        String[] options = {"Uredi", "Izbriši"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Odaberite opciju").setItems(options, new DialogInterface.OnClickListener() {
@@ -127,29 +118,112 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
             public void onClick(DialogInterface dialogInterface, int which) {
                 if(which==0){
                     Intent intent = new Intent(context, PdfEditActivity.class);
-                    intent.putExtra("bookAuthor", bookAuthor);
+                    intent.putExtra("bookId", bookId);
                     context.startActivity(intent);
 
                 }else if(which==1){
-                    MyApplication.deleteBook(
-                            context,
-                            ""+bookURL,
-                            ""+bookImage,
-                            ""+bookTitle);
-                    //deleteBook(model, holder);
-                }else if(which==2){
-                    detailsBook(model, holder);
+                    deleteBook(model, holder);
                 }
 
             }
         }).show();
     }
 
-    private void detailsBook(Book model, BookViewHolder holder) {
+    private void deleteBook(Book model, BookViewHolder holder) {
+        Log.d(TAG, "onDelete:uspješno učitavanje");
+        String bookURL = model.getUrl();
+        String bookTimetamp = model.getTimestamp();
+        String bookImage = model.getImage();
+        String bookTitle = model.getTitle();
+
+        Log.d(TAG, "deleteBook: Deleting...");
+
+        StorageReference storageReferencePdf = FirebaseStorage.getInstance().getReferenceFromUrl(bookURL);
+        StorageReference storageReferenceImage = FirebaseStorage.getInstance().getReferenceFromUrl(bookImage);
+        storageReferencePdf.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "onSuccess: Deleted from storage");
+                Log.d(TAG, "onSuccess: Now deleting from db");
+
+                DatabaseReference reference = mDatabase.getReference("Books");
+                Log.d(TAG, "reference:" + reference.child("gg").getParent());
+                reference.child(bookTimetamp).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "onSuccess: Deleted from db too");
+                        Toast.makeText(context, "Knjiga uspješno izbrisana", Toast.LENGTH_SHORT).show();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: Failed to delete from db due to"+e.getMessage());
+                        progressDialog.dismiss();
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Failed to delete pdf file from storage due to"+e.getMessage());
+                progressDialog.dismiss();
+                Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        storageReferenceImage.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "onSuccess: Deleted from storage");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Failed to delete image from storage due to"+e.getMessage());
+                progressDialog.dismiss();
+                Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
+    private void loadPdfSize(Book model, BookViewHolder holder) {
 
+        String pdfUrl = model.getUrl();
 
+        StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
+        ref.getMetadata()
+                .addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                    @Override
+                    public void onSuccess(StorageMetadata storageMetadata) {
+                        double bytes = storageMetadata.getSizeBytes();
+                        Log.d(TAG, "onSuccess: " + model.getTitle() + " " + bytes);
+
+                        double kb = bytes/1024;
+                        double mb = kb/1024;
+
+                        if(mb >=1){
+                            holder.sizeTv.setText(String.format("%.2f", mb)+" MB");
+                        }
+                        else if(kb >=1){
+                            holder.sizeTv.setText(String.format("%.2f", kb)+" KB");
+                        }
+                        else{
+                            holder.sizeTv.setText(String.format("%.2f", bytes)+" bytes");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: " + e.getMessage());
+                    }
+                });
+    }
 
     class BookViewHolder extends RecyclerView.ViewHolder {
 
@@ -168,6 +242,17 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
             moreBtn = itemView.findViewById(R.id.moreBtn);
         }
 
+    }
+
+    //Validacija emaila
+    public boolean isEmailValid(String email) {
+        String regExpn = "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                + "(fpmoz.sum.ba)$";
+
+        Pattern pattern = Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 
 }

@@ -114,7 +114,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/linearLine"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/viewEmail"
@@ -159,6 +158,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/linearLine"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/viewPhone"
@@ -167,15 +167,13 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"/>
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLine"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="20dp">
 
         <Button
             android:id="@+id/editProfile"
@@ -196,7 +194,7 @@
             android:textSize="15dp"
             android:textColor="@color/purple_700"
             android:drawableLeft="@drawable/ic_baseline_lock_24"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="20dp"/>
 
         <Button
             android:id="@+id/logoutBtn"
@@ -207,7 +205,7 @@
             android:textSize="15dp"
             android:textColor="@color/red"
             android:drawableLeft="@drawable/ic_baseline_logout_24"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="20dp"/>
 
     </LinearLayout>
 
