@@ -67,21 +67,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="225dp">
+        android:layout_marginTop="225dp"
+        app:hintEnabled="false">
 
         <EditText
             android:id="@+id/titleEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_edittext01"
-            android:drawableStart="@drawable/ic_pdf_grey"
+            android:drawableStart="@drawable/ic_title_gray"
             android:drawablePadding="10dp"
-            android:hint="Naslov knjige"
-            android:inputType="textPersonName|textCapSentences"
+            android:hint="Ime knjige"
             android:padding="10dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/gray01"
-            android:textSize="16sp"/>
+            android:textColorHint="@color/gray01"/>
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -92,22 +91,20 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_below="@id/titleTil"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        app:hintEnabled="false">
 
         <EditText
             android:id="@+id/authorTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_edittext01"
-            android:drawableStart="@drawable/ic_pdf_grey"
+            android:drawableStart="@drawable/ic_person_gray"
             android:drawablePadding="10dp"
-            android:hint="Autor knjige"
-            android:gravity="top"
-            android:inputType="textMultiLine|textCapSentences"
+            android:hint="Autor"
             android:padding="10dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/gray01"
-            android:textSize="16sp"/>
+            android:textColorHint="@color/gray01"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,22 +115,20 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_below="@id/authorTil"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        app:hintEnabled="false">
 
         <EditText
             android:id="@+id/descriptionEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_edittext01"
-            android:drawableStart="@drawable/ic_pdf_grey"
+            android:drawableStart="@drawable/ic_description_gray"
             android:drawablePadding="10dp"
             android:hint="Opis knjige"
-            android:gravity="top"
-            android:inputType="textMultiLine|textCapSentences"
             android:padding="10dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/gray01"
-            android:textSize="16sp"/>
+            android:textColorHint="@color/gray01"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

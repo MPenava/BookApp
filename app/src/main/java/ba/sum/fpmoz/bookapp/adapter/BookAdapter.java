@@ -107,9 +107,7 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
     }
 
     private void moreOptionsDialog(Book model, BookViewHolder holder) {
-        String bookAuthor = model.getAuthor();
-        String bookURL = model.getUrl();
-        String bookTitle = model.getTitle();
+        String bookId = model.getTimestamp();
 
         // Opcije koje će se prikazivati u dijalogu.
         String[] options = {"Uredi", "Izbriši"};
@@ -120,7 +118,7 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
             public void onClick(DialogInterface dialogInterface, int which) {
                 if(which==0){
                     Intent intent = new Intent(context, PdfEditActivity.class);
-                    intent.putExtra("bookAuthor", bookAuthor);
+                    intent.putExtra("bookId", bookId);
                     context.startActivity(intent);
 
                 }else if(which==1){

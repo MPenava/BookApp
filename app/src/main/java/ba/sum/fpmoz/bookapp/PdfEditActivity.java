@@ -1,16 +1,17 @@
 package ba.sum.fpmoz.bookapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import ba.sum.fpmoz.bookapp.databinding.ActivityPdfEditBinding;
@@ -28,8 +28,9 @@ import ba.sum.fpmoz.bookapp.databinding.ActivityPdfEditBinding;
 public class PdfEditActivity extends AppCompatActivity {
 
     private ActivityPdfEditBinding binding;
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
 
-    private String bookAuthor;
+    private String bookId;
 
     private ProgressDialog progressDialog;
 
@@ -40,19 +41,24 @@ public class PdfEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
+
         binding = ActivityPdfEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         Button submitBtn = findViewById(R.id.submitBtn);
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity( new Intent(PdfEditActivity.this, BooksActivity.class)
-           );}
+                );}
         });
 
-        bookAuthor = getIntent().getStringExtra("bookAuthor");
+        bookId = getIntent().getStringExtra("bookId");
+        log.d(TAG, "bookId: " + bookId);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Molimo pričekajte");
@@ -61,11 +67,11 @@ public class PdfEditActivity extends AppCompatActivity {
         loadBookInfo();
 
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+        binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 validateData();
-                onBackPressed();
+                startActivity( new Intent(PdfEditActivity.this, BooksActivity.class));
             }
         });
 
@@ -75,8 +81,8 @@ public class PdfEditActivity extends AppCompatActivity {
     private void loadBookInfo() {
         log.d(TAG,"loadBookInfo:Pričekajte..");
 
-        DatabaseReference refBooks= FirebaseDatabase.getInstance().getReference("Books");
-        refBooks.child(bookAuthor)
+        DatabaseReference refBooks = mDatabase.getReference("Books");
+        refBooks.child(bookId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -113,12 +119,12 @@ public class PdfEditActivity extends AppCompatActivity {
             Toast.makeText(this, "Unesite autora", Toast.LENGTH_SHORT).show();
         }
         else{
-            updatePdf();
+            updateBook();
         }
 
     }
 
-    private void updatePdf() {
+    private void updateBook() {
         Log.d(TAG, "updatePdf: Ažuriranje pdf u bazu...");
         progressDialog.setMessage("Ažuriranje knjige...");
         progressDialog.show();
@@ -128,8 +134,8 @@ public class PdfEditActivity extends AppCompatActivity {
         hashMap.put("description",""+description);
         hashMap.put("author",""+author);
 
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Books");
-        ref.child(bookAuthor)
+        DatabaseReference ref= mDatabase.getReference("Books");
+        ref.child(bookId)
                 .updateChildren(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
