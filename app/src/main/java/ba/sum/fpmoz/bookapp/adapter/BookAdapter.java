@@ -24,6 +24,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,7 +37,11 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import ba.sum.fpmoz.bookapp.AddBookActivity;
+import ba.sum.fpmoz.bookapp.BooksActivity;
 import ba.sum.fpmoz.bookapp.MyApplication;
 import ba.sum.fpmoz.bookapp.PdfEditActivity;
 import ba.sum.fpmoz.bookapp.R;
@@ -48,9 +54,9 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
     Context context;
     public static final String TAG = "BOOK_ADAPTER";
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private ProgressDialog progressDialog;
-
 
     public BookAdapter(@NonNull FirebaseRecyclerOptions <Book> options) {
         super(options);
@@ -92,7 +98,10 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
         holder.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moreOptionsDialog(model, holder);
+                FirebaseUser currentUser  = mAuth.getCurrentUser();
+                if(isEmailValid(currentUser.getEmail())){
+                    moreOptionsDialog(model, holder);
+                }
             }
         });
     }
@@ -235,6 +244,17 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
             moreBtn = itemView.findViewById(R.id.moreBtn);
         }
 
+    }
+
+    //Validacija emaila
+    public boolean isEmailValid(String email) {
+        String regExpn = "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                + "(fpmoz.sum.ba)$";
+
+        Pattern pattern = Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 
 }
