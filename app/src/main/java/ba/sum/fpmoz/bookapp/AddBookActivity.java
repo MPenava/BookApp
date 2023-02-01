@@ -214,8 +214,6 @@ public class AddBookActivity extends AppCompatActivity {
         hashMap.put("url", ""+uploadedPdfUrl);
         hashMap.put("image", ""+uploadedImgUrl);
         hashMap.put("timestamp", ""+timestamp);
-        hashMap.put("viewsCount", 0);
-        hashMap.put("downloadsCount",0);
 
 
         DatabaseReference ref = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Books");

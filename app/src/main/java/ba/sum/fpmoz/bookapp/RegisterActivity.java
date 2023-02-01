@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             registerPasswordCnfTxt.setText("");
 
                                             Log.d(TAG, "uploadProfile: uspješno");
-                                            Toast.makeText(getApplicationContext(), "Registracija je uspješna. Molimo verficirajte email.", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(), "Registracija je uspješna. Molimo potvrdite e-mail adresu.", Toast.LENGTH_LONG).show();
                                         }else{
                                             Log.d(TAG, "uploadProfile: neuspješno");
                                         }
