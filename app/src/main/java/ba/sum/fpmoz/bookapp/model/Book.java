@@ -1,23 +1,15 @@
 package ba.sum.fpmoz.bookapp.model;
 
+import dalvik.system.BaseDexClassLoader;
+
 public class Book {
-    String title,description,author,url,image;
-    String timestamp,viewsCount,downloadsCount;
+    private String title;
+    private String description;
+    private String author;
+    private String url;
+    private String image;
 
-
-    public Book() {
-    }
-
-    public Book(String title, String description, String author, String url, String image, String timestamp, String viewsCount, String downloadsCount) {
-        this.title = title;
-        this.description = description;
-        this.author = author;
-        this.url = url;
-        this.image = image;
-        this.timestamp = timestamp;
-        this.viewsCount = viewsCount;
-        this.downloadsCount = downloadsCount;
-    }
+    private String timestamp;
 
     public String getTitle() {
         return title;
@@ -51,14 +43,6 @@ public class Book {
         this.url = url;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public String getTimestamp() {
         return timestamp;
     }
@@ -67,19 +51,11 @@ public class Book {
         this.timestamp = timestamp;
     }
 
-    public String getViewsCount() {
-        return viewsCount;
+    public String getImage() {
+        return image;
     }
 
-    public void setViewsCount(String viewsCount) {
-        this.viewsCount = viewsCount;
-    }
-
-    public String getDownloadsCount() {
-        return downloadsCount;
-    }
-
-    public void setDownloadsCount(String downloadsCount) {
-        this.downloadsCount = downloadsCount;
+    public void setImage(String image) {
+        this.image = image;
     }
 }
