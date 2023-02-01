@@ -41,6 +41,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ba.sum.fpmoz.bookapp.AddBookActivity;
+import ba.sum.fpmoz.bookapp.BookDetailsActivity;
 import ba.sum.fpmoz.bookapp.BooksActivity;
 import ba.sum.fpmoz.bookapp.MyApplication;
 import ba.sum.fpmoz.bookapp.PdfEditActivity;
@@ -104,13 +105,25 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
                 }
             }
         });
+
+        holder.titleTv.setOnClickListener(new View.OnClickListener() {
+            String bookId = model.getTimestamp();
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "titleBtn:id: " + bookId);
+                Intent intent = new Intent(context, BookDetailsActivity.class);
+                intent.putExtra("bookId", bookId);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     private void moreOptionsDialog(Book model, BookViewHolder holder) {
         String bookId = model.getTimestamp();
 
         // Opcije koje će se prikazivati u dijalogu.
-        String[] options = {"Uredi", "Izbriši"};
+        String[] options = {"Uredi", "Izbriši",};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Odaberite opciju").setItems(options, new DialogInterface.OnClickListener() {
@@ -124,7 +137,6 @@ public class BookAdapter extends FirebaseRecyclerAdapter<Book, BookAdapter.BookV
                 }else if(which==1){
                     deleteBook(model, holder);
                 }
-
             }
         }).show();
     }
