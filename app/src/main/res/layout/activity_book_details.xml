@@ -149,7 +149,10 @@
                 android:layout_marginTop="10dp"
                 android:text="Opis knjige"
                 android:textStyle="italic"
-                android:textColor="@color/black" />
+                android:layout_gravity="center_vertical|end"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:typeface="serif"/>
 
         </LinearLayout>
     </ScrollView>
@@ -166,7 +169,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
-            android:text="Otvori"
+            android:text="Otvori knjigu"
             android:textColor="@color/white">
         </Button>
 

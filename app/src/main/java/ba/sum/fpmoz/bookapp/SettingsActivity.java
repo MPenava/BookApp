@@ -110,11 +110,6 @@ public class SettingsActivity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
 
-                    case R.id.navigation_notifications:
-                        startActivity(new Intent(getApplicationContext(), NotificationsActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
                     case R.id.navigation_settings:
                         return true;
                 }

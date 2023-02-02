@@ -88,11 +88,6 @@ public class BooksActivity extends AppCompatActivity {
                     case R.id.navigation_books:
                         return true;
 
-                    case R.id.navigation_notifications:
-                        startActivity(new Intent(getApplicationContext(), NotificationsActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
                     case R.id.navigation_settings:
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         overridePendingTransition(0,0);
