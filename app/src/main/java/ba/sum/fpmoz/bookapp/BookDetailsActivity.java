@@ -52,11 +52,11 @@ public class BookDetailsActivity extends AppCompatActivity {
     ImageButton backBtn;
     TextView titleTv, descriptionTv, authorTv, dateTv, sizeTv;
     ImageView imageIv;
-    Button downloadBookBtn;
+    Button downloadBookBtn, readBookBtn;
 
     public static final String TAG = "BOOK_DETAILS";
-
     private static final String TAG_DOWNLOAD = "TAG_DOWNLOAD";
+    private static final String TAG_READ = "TAG_READ";
 
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
     FirebaseStorage mStorage = FirebaseStorage.getInstance();
@@ -67,9 +67,10 @@ public class BookDetailsActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_book_details);
-
         downloadBookBtn = findViewById(R.id.downloadBookBtn);
         downloadBookBtn.setVisibility(View.GONE);
+
+        readBookBtn = findViewById(R.id.readBookBtn);
 
         titleTv = findViewById(R.id.titleTv);
         descriptionTv = findViewById(R.id.descriptionTv);
@@ -89,7 +90,12 @@ public class BookDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG_DOWNLOAD, "onclick za preuziamnje:");
+                Toast.makeText(BookDetailsActivity.this, "Preuzimanje...", Toast.LENGTH_SHORT).show();
 
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlPdf));
+                startActivity(intent);
+
+                /*
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlPdf));
                 request.setTitle(titleBook);
                 request.setDescription("Prezimanje datoteke");
@@ -100,8 +106,21 @@ public class BookDetailsActivity extends AppCompatActivity {
 
                 DownloadManager downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
                 downloadManager.enqueue(request);
+                 */
+            }
+        });
 
-                Toast.makeText(BookDetailsActivity.this, "Preuzimanje je počelo...", Toast.LENGTH_SHORT).show();
+        readBookBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG_READ, "onclick za citanje pdf-a:");
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(urlPdf), "application/pdf");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                Intent newIntent = Intent.createChooser(intent, "Open File");
+                startActivity(newIntent);
             }
         });
 
