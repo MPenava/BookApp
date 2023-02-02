@@ -67,14 +67,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".NotificationsActivity"
+            android:name=".SettingsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".NotificationsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -89,13 +89,6 @@
         </activity>
         <activity
             android:name=".ChangePasswordActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ShopActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

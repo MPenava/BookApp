@@ -36,11 +36,6 @@ public class NotificationsActivity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
 
-                    case R.id.navigation_shop:
-                        startActivity(new Intent(getApplicationContext(), ShopActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
                     case R.id.navigation_notifications:
                         return true;
 

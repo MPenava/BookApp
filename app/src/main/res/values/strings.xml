@@ -2,7 +2,6 @@
     <string name="app_name">BookApp</string>
     <string name="title_home">Početna</string>
     <string name="title_books">Knjige</string>
-    <string name="title_shop">Kupovina</string>
     <string name="title_notifications">Notifikacije</string>
     <string name="title_settings">Postavke</string>
     <string name="nemate_ra_un_registrirajte_se">Nemate račun? <b>Registrirajte se</b></string>
