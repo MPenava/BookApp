@@ -1,10 +1,18 @@
 package ba.sum.fpmoz.bookapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PackageManagerCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -12,9 +20,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,16 +37,25 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import ba.sum.fpmoz.bookapp.adapter.BookAdapter;
 import ba.sum.fpmoz.bookapp.model.Book;
 
 public class BookDetailsActivity extends AppCompatActivity {
-    String bookId;
+    String bookId, urlPdf, titleBook;
     ImageButton backBtn;
     TextView titleTv, descriptionTv, authorTv, dateTv, sizeTv;
     ImageView imageIv;
+    Button downloadBookBtn;
+
+    public static final String TAG = "BOOK_DETAILS";
+
+    private static final String TAG_DOWNLOAD = "TAG_DOWNLOAD";
 
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://bookapp-a9588-default-rtdb.europe-west1.firebasedatabase.app/");
+    FirebaseStorage mStorage = FirebaseStorage.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +64,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_book_details);
 
+        downloadBookBtn = findViewById(R.id.downloadBookBtn);
+        downloadBookBtn.setVisibility(View.GONE);
+
         titleTv = findViewById(R.id.titleTv);
         descriptionTv = findViewById(R.id.descriptionTv);
         authorTv = findViewById(R.id.authorTv);
@@ -50,11 +74,27 @@ public class BookDetailsActivity extends AppCompatActivity {
         sizeTv = findViewById(R.id.sizeTv);
         imageIv = findViewById(R.id.imageIv);
 
+
+
         Intent intent=getIntent();
         bookId= intent.getStringExtra("bookId");
 
         loadBookDetails();
 
+        downloadBookBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG_DOWNLOAD, "onclick za preuziamnje:");
+                if(ContextCompat.checkSelfPermission(BookDetailsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    Log.d(TAG_DOWNLOAD, "permisije prihvaćene.");
+                    MyApplication.downloadBook(BookDetailsActivity.this, urlPdf, titleBook);
+                }else{
+                    Log.d(TAG_DOWNLOAD, "permisije nisu prihvaćene!");
+                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+
+            }
+        });
 
         backBtn =  findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -73,16 +113,17 @@ public class BookDetailsActivity extends AppCompatActivity {
         ref.child(bookId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String title=""+snapshot.child("title").getValue();
+                titleBook=""+snapshot.child("title").getValue();
                 String author=""+snapshot.child("author").getValue();
                 String description=""+snapshot.child("description").getValue();
-                String url=""+snapshot.child("url").getValue();
+                urlPdf=""+snapshot.child("url").getValue();
                 String image=""+snapshot.child("image").getValue();
                 String timestamp=""+snapshot.child("timestamp").getValue();
+                downloadBookBtn.setVisibility(View.VISIBLE);
 
-                String date=MyApplication.formatTimestamp(timestamp);
-                loadPdfSize(url, sizeTv);
-                titleTv.setText(title);
+                String date = MyApplication.formatTimestamp(timestamp);
+                loadPdfSize(urlPdf, sizeTv);
+                titleTv.setText(titleBook);
                 descriptionTv.setText(description);
                 authorTv.setText(author);
                 dateTv.setText(date);
@@ -126,4 +167,15 @@ public class BookDetailsActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted ->{
+               if(isGranted){
+                   Log.d(TAG_DOWNLOAD, "Permisije odobrene");
+                   MyApplication.downloadBook(this, urlPdf, titleBook);
+               }else{
+                   Log.d(TAG_DOWNLOAD, "Permisije nisu odobrene");
+                   Toast.makeText(this, "Niste u mogućnosti preuzeti dokument", Toast.LENGTH_SHORT);
+               }
+            });
 }
