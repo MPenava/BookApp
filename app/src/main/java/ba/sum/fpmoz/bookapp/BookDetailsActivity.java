@@ -8,14 +8,18 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.PackageManagerCompat;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.webkit.CookieManager;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -85,14 +89,19 @@ public class BookDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG_DOWNLOAD, "onclick za preuziamnje:");
-                if(ContextCompat.checkSelfPermission(BookDetailsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    Log.d(TAG_DOWNLOAD, "permisije prihvaćene.");
-                    MyApplication.downloadBook(BookDetailsActivity.this, urlPdf, titleBook);
-                }else{
-                    Log.d(TAG_DOWNLOAD, "permisije nisu prihvaćene!");
-                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                }
 
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlPdf));
+                request.setTitle(titleBook);
+                request.setDescription("Prezimanje datoteke");
+                String cookie = CookieManager.getInstance().getCookie(urlPdf);
+                request.addRequestHeader("cookie", cookie);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, titleBook);
+
+                DownloadManager downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
+                downloadManager.enqueue(request);
+
+                Toast.makeText(BookDetailsActivity.this, "Preuzimanje je počelo...", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -167,15 +176,4 @@ public class BookDetailsActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    private ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted ->{
-               if(isGranted){
-                   Log.d(TAG_DOWNLOAD, "Permisije odobrene");
-                   MyApplication.downloadBook(this, urlPdf, titleBook);
-               }else{
-                   Log.d(TAG_DOWNLOAD, "Permisije nisu odobrene");
-                   Toast.makeText(this, "Niste u mogućnosti preuzeti dokument", Toast.LENGTH_SHORT);
-               }
-            });
 }
