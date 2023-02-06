@@ -70,6 +70,7 @@
     </LinearLayout>
 
     <View
+        android:id="@id/linearLine1"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/viewFullname"
@@ -82,7 +83,7 @@
         android:id="@+id/viewEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewFullname"
+        android:layout_below="@+id/linearLine1"
         android:layout_marginTop="20dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -114,6 +115,7 @@
     </LinearLayout>
 
     <View
+        android:id="@id/linearLine2"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/viewEmail"
@@ -126,7 +128,7 @@
         android:id="@+id/viewPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewEmail"
+        android:layout_below="@+id/linearLine2"
         android:layout_marginTop="20dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -158,7 +160,7 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/linearLine"
+        android:id="@+id/linearLine3"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/viewPhone"
@@ -170,7 +172,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLine"
+        android:layout_below="@+id/linearLine3"
         android:orientation="vertical"
         android:gravity="center"
         android:layout_marginTop="20dp">

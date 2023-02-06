@@ -27,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     ImageView imgLogoutView;
-    TextView viewLl, fullnameTv, phoneTv, emailTv;
+    TextView viewLl, fullnameTv, emailTv, phoneTv;
     Button editProfile, changePassword, logoutBtn;
     FirebaseAuth mAuth;
 
@@ -48,9 +48,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         viewLl = findViewById(R.id.viewLl);
         fullnameTv = findViewById(R.id.fullnameTv);
-        phoneTv = findViewById(R.id.phoneTv);
         emailTv = findViewById(R.id.emailTv);
-
+        phoneTv = findViewById(R.id.phoneTv);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -62,8 +61,8 @@ public class SettingsActivity extends AppCompatActivity {
                     if(profileUser != null){
                         viewLl.setText(profileUser.getFullname());
                         fullnameTv.setText(profileUser.getFullname());
-                        phoneTv.setText(profileUser.getPhone());
                         emailTv.setText(profileUser.getEmail());
+                        phoneTv.setText(profileUser.getPhone());
                     }
                 }
             });
