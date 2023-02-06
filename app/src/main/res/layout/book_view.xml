@@ -37,6 +37,7 @@
             android:text="Ime knjige"
             android:layout_toEndOf="@id/pdfRl"
             android:layout_toStartOf="@id/moreBtn"
+            android:textColor="@color/black"
             android:maxLines="2">
         </TextView>
 
@@ -64,6 +65,7 @@
             android:layout_marginTop="5dp"
             android:maxLines="1"
             android:ellipsize="end"
+            android:textColor="@color/black"
             android:text="Opis knjige">
         </TextView>
 
@@ -74,6 +76,7 @@
             android:layout_height="wrap_content"
             android:text="13MB"
             android:layout_toEndOf="@id/pdfRl"
+            android:textColor="@color/black"
             android:layout_alignParentBottom="true"
             android:maxLines="1">
         </TextView>
@@ -85,6 +88,7 @@
             android:layout_height="wrap_content"
             android:text="dd/MM/yyyy"
             android:layout_alignParentEnd="true"
+            android:textColor="@color/black"
             android:layout_alignParentBottom="true"
             android:maxLines="1">
         </TextView>
